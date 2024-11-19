@@ -1,0 +1,8 @@
+openai
+langchain-community
+langchain-core
+pydantic
+PyPDF2
+python-dotenv
+faiss-cpu
+sentence-transformers
