@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 from PyPDF2 import PdfReader
 from langchain.schema import Document
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -9,16 +10,29 @@ from langchain.chat_models import ChatOpenAI
 from langchain.schema.messages import HumanMessage, SystemMessage
 import streamlit as st
 
+def download_pdf_from_github(pdf_url, save_path):
+    """
+    Download the PDF from GitHub and save it to the given path.
+    """
+    response = requests.get(pdf_url)
+    if response.status_code == 200:
+        with open(save_path, "wb") as f:
+            f.write(response.content)
+        return save_path
+    else:
+        raise Exception(f"Failed to download PDF from GitHub. Status code: {response.status_code}")
+
 class ExpertSystemRAGModel:
-    def __init__(self, pdf_path, vectorstore_path, api_key):
+    def __init__(self, pdf_url, vectorstore_path, api_key):
         """
-        Initialize the model with paths for the PDF and vectorstore. The OpenAI API key is retrieved from the environment.
+        Initialize the model with the GitHub URL for the PDF, vectorstore path, and the OpenAI API key.
         """
         self.api_key = api_key  # Access the OpenAI API key directly
         if not self.api_key:
             raise ValueError("OpenAI API key is not set. Ensure it is in the environment or secrets.toml.")
 
-        self.pdf_path = pdf_path
+        # Download the PDF from GitHub
+        self.pdf_path = download_pdf_from_github(pdf_url, "SEC-merged.pdf")
         self.vectorstore_path = vectorstore_path
         self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
         self.text_splitter = CharacterTextSplitter(
@@ -39,7 +53,7 @@ class ExpertSystemRAGModel:
             "SEC-2022.pdf": (137, 257),
             "SEC-2023.pdf": (258, 350),
         }
-        
+
     def get_source_and_page(self, merged_page_number):
         """
         Maps the merged PDF's page number to the corresponding source PDF and adjusted page number.
@@ -182,13 +196,13 @@ def main():
         
     # Load secrets from Streamlit
     api_key = st.secrets["api_keys"]["openai"]
-    pdf_path = st.secrets["paths"]["pdf_path"]
     vectorstore_path = st.secrets["paths"]["vectorstore_path"]
 
     # Initialize the RAG model
     @st.cache_resource
     def initialize_model():
-        model = ExpertSystemRAGModel(pdf_path, vectorstore_path, api_key)
+        pdf_url = "https://raw.githubusercontent.com/SyedAejazAhmed/SEC-Reports/main/RAG-SEC/SEC-merged.pdf"
+        model = ExpertSystemRAGModel(pdf_url, vectorstore_path, api_key)
         model.create_vectorstore()  # Ensure vectorstore is created
         return model
 
