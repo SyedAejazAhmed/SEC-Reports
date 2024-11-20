@@ -11,9 +11,6 @@ from langchain.schema.messages import HumanMessage, SystemMessage
 import streamlit as st
 
 def download_pdf_from_github(pdf_url, save_path):
-    """
-    Download the PDF from GitHub and save it to the given path.
-    """
     response = requests.get(pdf_url)
     if response.status_code == 200:
         with open(save_path, "wb") as f:
@@ -24,14 +21,9 @@ def download_pdf_from_github(pdf_url, save_path):
 
 class ExpertSystemRAGModel:
     def __init__(self, pdf_url, vectorstore_path, api_key):
-        """
-        Initialize the model with the GitHub URL for the PDF, vectorstore path, and the OpenAI API key.
-        """
-        self.api_key = api_key  # Access the OpenAI API key directly
+        self.api_key = api_key
         if not self.api_key:
             raise ValueError("OpenAI API key is not set. Ensure it is in the environment or secrets.toml.")
-
-        # Download the PDF from GitHub
         self.pdf_path = download_pdf_from_github(pdf_url, "SEC-merged.pdf")
         self.vectorstore_path = vectorstore_path
         self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -41,11 +33,7 @@ class ExpertSystemRAGModel:
             chunk_overlap=200,
             length_function=len,
         )
-
-        # Initialize OpenAI's GPT-4 model
         self.llm = ChatOpenAI(model="gpt-4", openai_api_key=self.api_key)
-
-        # PDF source mappings
         self.pdf_mappings = {
             "SEC-2019.pdf": (1, 53),
             "SEC-2020.pdf": (54, 90),
@@ -55,9 +43,6 @@ class ExpertSystemRAGModel:
         }
 
     def get_source_and_page(self, merged_page_number):
-        """
-        Maps the merged PDF's page number to the corresponding source PDF and adjusted page number.
-        """
         for pdf_name, (start_page, end_page) in self.pdf_mappings.items():
             if start_page <= merged_page_number <= end_page:
                 relative_page_number = merged_page_number - start_page + 1
@@ -65,9 +50,6 @@ class ExpertSystemRAGModel:
         return "Unknown Source", merged_page_number
 
     def clean_content(self, text):
-        """
-        Clean unnecessary content like URLs and empty lines.
-        """
         if not text:
             return ""
         lines = text.splitlines()
@@ -75,22 +57,15 @@ class ExpertSystemRAGModel:
         return " ".join(cleaned_lines)
 
     def process_pdf(self):
-        """
-        Processes the PDF, splits text into chunks, and assigns metadata.
-        """
-        print(f"Reading and processing PDF: {self.pdf_path}")
         pdf_reader = PdfReader(self.pdf_path)
-
         documents = []
         for page_num, page in enumerate(pdf_reader.pages):
-            merged_page_number = page_num + 1  # Pages start from 1
+            merged_page_number = page_num + 1
             source, relative_page = self.get_source_and_page(merged_page_number)
-
             text = page.extract_text()
             if text:
                 cleaned_text = self.clean_content(text)
                 chunks = self.text_splitter.split_text(cleaned_text)
-
                 for chunk_num, chunk in enumerate(chunks):
                     documents.append(
                         Document(
@@ -102,20 +77,11 @@ class ExpertSystemRAGModel:
                             },
                         )
                     )
-
-        print(f"Processed {len(documents)} text chunks from the PDF.")
         return documents
 
     def create_vectorstore(self):
-        """
-        Processes the PDF, creates a FAISS vectorstore, and saves it.
-        """
         documents = self.process_pdf()
-
-        print("Creating vectorstore...")
         docsearch = FAISS.from_documents(documents, self.embeddings)
-
-        print("Saving vectorstore in JSON format...")
         os.makedirs(os.path.dirname(self.vectorstore_path), exist_ok=True)
         with open(self.vectorstore_path, "w", encoding="utf-8") as f:
             json.dump(
@@ -123,53 +89,32 @@ class ExpertSystemRAGModel:
                 f,
                 indent=4,
             )
-
-        self.docsearch = docsearch  # Store vectorstore in memory
-        print(f"Vectorstore created and saved at: {self.vectorstore_path}")
+        self.docsearch = docsearch
 
     def load_vectorstore(self):
-        """
-        Loads the vectorstore from the JSON file.
-        """
-        print("Loading vectorstore...")
         with open(self.vectorstore_path, "r", encoding="utf-8") as f:
             documents = json.load(f)
-
         self.docsearch = FAISS.from_documents(
             [Document(page_content=d["content"], metadata=d["metadata"]) for d in documents],
             self.embeddings,
         )
-        print("Vectorstore loaded successfully!")
 
     def answer_query(self, query):
-        """
-        Answers a user query using the FAISS vectorstore and GPT-4.
-        """
         if not hasattr(self, "docsearch"):
-            print("Vectorstore not loaded. Loading...")
             self.load_vectorstore()
-
-        print("Searching for relevant documents...")
         docs = self.docsearch.similarity_search(query, k=5)
-
         if not docs:
             return {
                 "answer": "No relevant information found.",
                 "sources": [],
             }
-
-        # Combine document content for the context
         combined_content = "\n\n".join([f"Source: {doc.metadata.get('source')}, Page: {doc.metadata.get('page')}\n\n{doc.page_content}" for doc in docs])
-
-        # Prepare messages for GPT-4 (Chat Completions API)
         messages = [
             SystemMessage(content="You are a helpful assistant. Answer questions based on the provided context."),
             HumanMessage(content=f"Context: {combined_content}\n\nQuestion: {query}")
         ]
-
-        print("Generating answer with GPT-4...")
         try:
-            response = self.llm.invoke(messages)  # Use invoke for chat models
+            response = self.llm.invoke(messages)
             return {
                 "answer": response.content,
                 "sources": [{"source": doc.metadata.get("source"), "page": doc.metadata.get("page")} for doc in docs],
@@ -180,12 +125,9 @@ class ExpertSystemRAGModel:
                 "sources": [],
             }
 
-# Streamlit App
 def main():
     st.title("SEC-REPORTS")
     st.subheader("Based on PDFs of SEC-2019, 2020, 2021, 2022, 2023")
-
-    # About Section in Sidebar
     with st.sidebar:
         st.header("About")
         st.write("""
@@ -193,22 +135,17 @@ def main():
             It uses a **Retrieval-Augmented Generation (RAG)** model powered by GPT-4.
             The model answers your queries by processing the content of these SEC reports.
             """)
-        
-    # Load secrets from Streamlit
     api_key = st.secrets["api_keys"]["openai"]
     vectorstore_path = st.secrets["paths"]["vectorstore_path"]
 
-    # Initialize the RAG model
     @st.cache_resource
     def initialize_model():
         pdf_url = "https://raw.githubusercontent.com/SyedAejazAhmed/SEC-Reports/main/RAG-SEC/SEC-merged.pdf"
         model = ExpertSystemRAGModel(pdf_url, vectorstore_path, api_key)
-        model.create_vectorstore()  # Ensure vectorstore is created
+        model.create_vectorstore()
         return model
 
     model = initialize_model()
-
-    # Form for input and submitting via Enter Key
     with st.form(key="query_form"):
         query = st.text_input("Enter your query:", placeholder="Ask me something about the SEC reports...")
         submit_button = st.form_submit_button("Submit")
@@ -217,12 +154,8 @@ def main():
         if query.strip():
             with st.spinner("Searching for relevant information..."):
                 response = model.answer_query(query)
-            
-            # Display the answer
             st.subheader("Answer:")
             st.write(response["answer"])
-            
-            # Display the sources
             if response["sources"]:
                 st.subheader("Sources:")
                 for source in response["sources"]:
