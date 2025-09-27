@@ -1,17 +1,51 @@
-# RAG-SEC
+# 📊 RAG-SEC - AI SEC Filing Assistant
 
-## Overview
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
+[![Retrieval-Augmented Generation](https://img.shields.io/badge/RAG-Enabled-purple.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-success.svg)]()
 
-RAG-SEC is a subproject within the [SEC-Reports](https://github.com/SyedAejazAhmed/SEC-Reports) repository, focusing on Retrieval-Augmented Generation (RAG) for analyzing SEC (Securities and Exchange Commission) filings and reports. The goal is to use state-of-the-art natural language processing techniques to automate, summarize, and answer questions about financial and regulatory documents.
+## Collaborators
 
-## Features
+- [SyedAejazAhmed](https://github.com/SyedAejazAhmed) (Owner)
+- [NowrinbegumR](https://github.com/NowrinbegumR) (Collaborator)
 
-- **Retrieval-Augmented Generation (RAG):** Combines document retrieval and generative AI to provide relevant answers and summaries for SEC filings.
-- **Automated Document Analysis:** Processes large volumes of SEC reports to extract actionable insights.
-- **Extensible and Modular:** Easily integrates with other analysis pipelines or modules.
-- **Custom Workflows:** Adaptable to various regulatory documents beyond SEC filings.
+---
 
-## Getting Started
+<div align="center">
+
+**💹 Built with ❤️ for Financial Data Analysis**
+
+*Empowering analysts and researchers with AI-driven SEC insights & document automation*
+
+[⭐ Star this repository](https://github.com/SyedAejazAhmed/SEC-Reports) • [🐛 Report Bug](https://github.com/SyedAejazAhmed/SEC-Reports/issues) • [✨ Request Feature](https://github.com/SyedAejazAhmed/SEC-Reports/issues)
+
+</div>
+
+---
+
+## 🚀 Overview
+
+**RAG-SEC** is a subproject of [SEC-Reports](https://github.com/SyedAejazAhmed/SEC-Reports), designed to apply Retrieval-Augmented Generation (RAG) for deep analysis of SEC (Securities and Exchange Commission) filings.
+
+- **Automated SEC Document Analysis:** Extract actionable insights from large volumes of filings (10-K, 10-Q, 8-K, etc.).
+- **RAG-powered Q&A:** Combines advanced document retrieval and generative AI for relevant answers and summaries.
+- **Modular & Extensible:** Integrates easily with other financial analysis pipelines or regulatory document workflows.
+- **Custom Workflows:** Adaptable to new SEC forms and other regulatory datasets.
+
+---
+
+## 📦 Features
+
+- **Retrieval-Augmented Generation (RAG):** Contextual Q&A and summarization for SEC filings.
+- **Automated Document Parsing:** Efficient extraction and structuring of financial data.
+- **Flexible Integration:** Plug into data lakes or reporting systems.
+- **Customizable Pipelines:** Tailor analysis to specific compliance or audit needs.
+- **Open Source:** MIT licensed for community-driven innovation.
+
+---
+
+## 🛠️ Getting Started
 
 ### Prerequisites
 
@@ -27,7 +61,7 @@ git clone https://github.com/SyedAejazAhmed/SEC-Reports.git
 cd SEC-Reports/RAG-SEC
 ```
 
-Install dependencies (if available):
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -35,32 +69,35 @@ pip install -r requirements.txt
 
 ### Usage
 
-To run RAG-SEC modules or scripts, use:
+To run RAG-SEC modules or scripts:
 
 ```bash
 python <script_name>.py
 ```
 
-Refer to code comments and docstrings for further details.
+See code comments and docstrings for module-specific instructions.
 
-## Folder Structure
+---
+
+## 📁 Folder Structure
 
 - `RAG-SEC/` — Main directory for this module.
     - Scripts, notebooks, and utilities for RAG-based SEC report analysis.
 
-## Collaborators
+---
 
-- [SyedAejazAhmed](https://github.com/SyedAejazAhmed) (Owner)
-- [NowrinbegumR](https://github.com/NowrinbegumR) (Collaborator)
-
-## Contributing
+## 🤝 Contributing
 
 We welcome contributions! Please open issues or pull requests for improvements, bug fixes, or new features.
 
-## License
+---
+
+## 📜 License
 
 This project is licensed under the MIT License.
 
-## Acknowledgments
+---
+
+## 🙏 Acknowledgments
 
 Thanks to all contributors and the open source community for supporting financial document analysis and automation.
