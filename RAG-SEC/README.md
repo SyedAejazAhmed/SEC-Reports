@@ -86,6 +86,13 @@ See code comments and docstrings for module-specific instructions.
 
 ---
 
+## Collaborators
+
+- [SyedAejazAhmed](https://github.com/SyedAejazAhmed) (Owner)
+- [Nowrin Begum R](https://github.com/NowrinbegumR) (Collaborator)
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! Please open issues or pull requests for improvements, bug fixes, or new features.
