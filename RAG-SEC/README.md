@@ -75,17 +75,6 @@ See code comments and docstrings for module-specific instructions.
 
 ---
 
-<div align="center">
-
-**💹 Built with ❤️ for Financial Data Analysis**
-
-*Empowering analysts and researchers with AI-driven SEC insights & document automation*
-
-[⭐ Star this repository](https://github.com/SyedAejazAhmed/SEC-Reports) • [🐛 Report Bug](https://github.com/SyedAejazAhmed/SEC-Reports/issues) • [✨ Request Feature](https://github.com/SyedAejazAhmed/SEC-Reports/issues)
-
-</div>
-
----
 
 
 ## 🤝 Contributing
@@ -103,3 +92,16 @@ This project is licensed under the MIT License.
 ## 🙏 Acknowledgments
 
 Thanks to all contributors and the open source community for supporting financial document analysis and automation.
+
+---
+
+
+<div align="center">
+
+**💹 Built with ❤️ for Financial Data Analysis**
+
+*Empowering analysts and researchers with AI-driven SEC insights & document automation*
+
+[⭐ Star this repository](https://github.com/SyedAejazAhmed/SEC-Reports) • [🐛 Report Bug](https://github.com/SyedAejazAhmed/SEC-Reports/issues) • [✨ Request Feature](https://github.com/SyedAejazAhmed/SEC-Reports/issues)
+
+</div>
