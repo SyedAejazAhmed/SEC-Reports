@@ -5,24 +5,6 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Active-success.svg)]()
 
-## Collaborators
-
-- [SyedAejazAhmed](https://github.com/SyedAejazAhmed) (Owner)
-- [NowrinbegumR](https://github.com/NowrinbegumR) (Collaborator)
-
----
-
-<div align="center">
-
-**💹 Built with ❤️ for Financial Data Analysis**
-
-*Empowering analysts and researchers with AI-driven SEC insights & document automation*
-
-[⭐ Star this repository](https://github.com/SyedAejazAhmed/SEC-Reports) • [🐛 Report Bug](https://github.com/SyedAejazAhmed/SEC-Reports/issues) • [✨ Request Feature](https://github.com/SyedAejazAhmed/SEC-Reports/issues)
-
-</div>
-
----
 
 ## 🚀 Overview
 
@@ -92,6 +74,19 @@ See code comments and docstrings for module-specific instructions.
 - [Nowrin Begum R](https://github.com/NowrinbegumR) (Collaborator)
 
 ---
+
+<div align="center">
+
+**💹 Built with ❤️ for Financial Data Analysis**
+
+*Empowering analysts and researchers with AI-driven SEC insights & document automation*
+
+[⭐ Star this repository](https://github.com/SyedAejazAhmed/SEC-Reports) • [🐛 Report Bug](https://github.com/SyedAejazAhmed/SEC-Reports/issues) • [✨ Request Feature](https://github.com/SyedAejazAhmed/SEC-Reports/issues)
+
+</div>
+
+---
+
 
 ## 🤝 Contributing
 
